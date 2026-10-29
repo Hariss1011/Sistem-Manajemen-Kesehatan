@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DaftarPoli;
 use App\Models\Periksa;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardDokterController extends Controller
@@ -12,18 +13,36 @@ class DashboardDokterController extends Controller
     {
         $dokterId = Auth::id();
 
-        // Total pasien periksa milik dokter
-        $totalPasien = Periksa::where('id_dokter', $dokterId)->count();
+        $pendaftaranDokter = DaftarPoli::whereHas(
+            'jadwal',
+            fn($query) => $query->where('id_dokter', $dokterId)
+        );
 
-        // Pasien yang benar-benar sudah diperiksa
+        $totalPasien = (clone $pendaftaranDokter)
+            ->distinct('id_pasien')
+            ->count('id_pasien');
+
+        $jumlahPendaftaran = (clone $pendaftaranDokter)->count();
+
         $sudahDiperiksa = Periksa::where('id_dokter', $dokterId)
             ->whereNotNull('catatan')
-            ->whereHas('detailPeriksa') // harus punya obat
             ->count();
 
-        // Sisanya berarti belum diperiksa
-        $belumDiperiksa = $totalPasien - $sudahDiperiksa;
+        $belumDiperiksa = max(
+            0,
+            $jumlahPendaftaran - $sudahDiperiksa
+        );
 
-        return view('dokter.dashboard', compact('totalPasien', 'sudahDiperiksa', 'belumDiperiksa'));
+        $pendaftaranHariIni = (clone $pendaftaranDokter)
+            ->whereDate('tanggal_kunjungan', today())
+            ->count();
+
+        return view('dokter.dashboard', compact(
+            'totalPasien',
+            'sudahDiperiksa',
+            'belumDiperiksa',
+            'jumlahPendaftaran',
+            'pendaftaranHariIni'
+        ));
     }
 }

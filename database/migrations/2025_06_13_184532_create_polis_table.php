@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('polis', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_poli');
-            $table->text('keterangan');
+            $table->string('nama_poli', 100)->unique();
+            $table->text('keterangan')->nullable();
             $table->timestamps();
         });
     }

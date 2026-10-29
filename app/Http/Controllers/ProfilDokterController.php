@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class ProfilDokterController extends Controller
 {
     public function edit()
     {
         $dokter = Auth::user();
+
         return view('dokter.profil.edit', compact('dokter'));
     }
 
@@ -18,25 +19,35 @@ class ProfilDokterController extends Controller
     {
         $dokter = Auth::user();
 
-        $request->validate([
-            'name' => 'required|string|max:100',
-            'email' => 'required|email|unique:users,email,' . $dokter->id,
-            'alamat' => 'nullable|string',
-            'no_hp' => 'nullable|string',
-            'password' => 'nullable|string|min:6',
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:100'],
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('users', 'email')->ignore($dokter->id),
+            ],
+            'alamat' => ['nullable', 'string', 'max:255'],
+            'no_hp' => ['nullable', 'string', 'max:20'],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
         ]);
 
-        $dokter->name = $request->name;
-        $dokter->email = $request->email;
-        $dokter->alamat = $request->alamat;
-        $dokter->no_hp = $request->no_hp;
+        $data = [
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'alamat' => $validated['alamat'] ?? null,
+            'no_hp' => $validated['no_hp'] ?? null,
+        ];
 
-        if ($request->filled('password')) {
-            $dokter->password = Hash::make($request->password);
+        if (! empty($validated['password'])) {
+            // Password di-hash oleh cast pada model User.
+            $data['password'] = $validated['password'];
         }
 
-        $dokter->save();
+        $dokter->update($data);
 
-        return redirect()->route('profil.edit')->with('success', 'Profil berhasil diperbarui.');
+        return redirect()
+            ->route('profil.edit')
+            ->with('success', 'Profil berhasil diperbarui.');
     }
 }

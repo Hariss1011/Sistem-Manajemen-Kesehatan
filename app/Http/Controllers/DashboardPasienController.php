@@ -2,25 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
 use App\Models\DaftarPoli;
 use App\Models\JadwalPeriksa;
 use App\Models\Poli;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardPasienController extends Controller
 {
     public function index()
     {
-        $userId = Auth::id();
+        $pasienId = Auth::id();
 
-        $jumlahPendaftaran = DaftarPoli::where('id_pasien', $userId)->count();
-        $jumlahJadwal = JadwalPeriksa::count();
+        $jumlahPendaftaran = DaftarPoli::where('id_pasien', $pasienId)
+            ->count();
+
+        $jumlahJadwal = JadwalPeriksa::where(
+            'status',
+            JadwalPeriksa::STATUS_AKTIF
+        )->count();
+
         $jumlahPoli = Poli::count();
+
+        $pendaftaranAktif = DaftarPoli::where('id_pasien', $pasienId)
+            ->whereDate('tanggal_kunjungan', '>=', today())
+            ->count();
 
         return view('pasien.dashboard', compact(
             'jumlahPendaftaran',
             'jumlahJadwal',
-            'jumlahPoli'
+            'jumlahPoli',
+            'pendaftaranAktif'
         ));
     }
 }

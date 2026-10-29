@@ -9,20 +9,31 @@ use Symfony\Component\HttpFoundation\Response;
 class RoleMiddleware
 {
     /**
-     * Handle an incoming request.
+     * Memeriksa apakah pengguna memiliki role yang diizinkan.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * Contoh:
+     * middleware('role:admin')
+     * middleware('role:admin,dokter')
      */
-    public function handle($request, Closure $next, ...$roles)
-    {
-        if (!Auth::check()) {
-            return redirect('/login');
+    public function handle(
+        Request $request,
+        Closure $next,
+        string ...$roles
+    ): Response {
+        $user = $request->user();
+
+        // Pengguna yang belum login tidak boleh melanjutkan.
+        if (!$user) {
+            return redirect()->guest(route('login'));
         }
 
-        $user = Auth::user();
-
-        if (!in_array($user->role, $roles)) {
-            abort(403, 'Akses ditolak.');
+        // Tolak akses jika role tidak disertakan
+        // atau tidak sesuai dengan role pengguna.
+        if (
+            empty($roles) ||
+            !in_array($user->role, $roles, true)
+        ) {
+            abort(403, 'Anda tidak memiliki izin untuk mengakses halaman ini.');
         }
 
         return $next($request);

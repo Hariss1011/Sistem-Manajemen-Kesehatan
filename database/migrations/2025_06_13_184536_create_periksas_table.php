@@ -6,26 +6,35 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('periksas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_dokter')->constrained('users')->onDelete('cascade');
-            $table->foreignId('id_pasien')->constrained('users')->onDelete('cascade');
-            $table->foreignId('id_daftar_poli')->constrained('daftar_polis')->onDelete('cascade');
+
+            $table->foreignId('id_dokter')
+                ->constrained('users')
+                ->restrictOnDelete();
+
+            $table->foreignId('id_pasien')
+                ->constrained('users')
+                ->restrictOnDelete();
+
+            $table->foreignId('id_daftar_poli')
+                ->unique()
+                ->constrained('daftar_polis')
+                ->restrictOnDelete();
+
             $table->dateTime('tgl_periksa');
             $table->text('catatan')->nullable();
-            $table->integer('biaya_periksa')->nullable();
+            $table->unsignedInteger('biaya_periksa')->default(0);
+
             $table->timestamps();
+
+            $table->index(['id_dokter', 'tgl_periksa']);
+            $table->index(['id_pasien', 'tgl_periksa']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('periksas');

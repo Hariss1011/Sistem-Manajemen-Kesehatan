@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Poli;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class PoliController extends Controller
 {
     public function index()
     {
-        $polis = Poli::all();
+        $polis = Poli::withCount('dokters')
+            ->orderBy('nama_poli')
+            ->paginate(10);
+
         return view('admin.poli.index', compact('polis'));
     }
 
@@ -20,19 +24,31 @@ class PoliController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nama_poli' => 'required|string|max:100',
-            'keterangan' => 'nullable|string',
+        $validated = $request->validate([
+            'nama_poli' => [
+                'required',
+                'string',
+                'max:100',
+                'unique:polis,nama_poli',
+            ],
+            'keterangan' => [
+                'nullable',
+                'string',
+                'max:1000',
+            ],
         ]);
 
-        Poli::create($request->all());
+        Poli::create($validated);
 
-        return redirect()->route('poli.index')->with('success', 'Data poli berhasil ditambahkan.');
+        return redirect()
+            ->route('poli.index')
+            ->with('success', 'Data poli berhasil ditambahkan.');
     }
 
     public function edit($id)
     {
         $poli = Poli::findOrFail($id);
+
         return view('admin.poli.edit', compact('poli'));
     }
 
@@ -40,21 +56,44 @@ class PoliController extends Controller
     {
         $poli = Poli::findOrFail($id);
 
-        $request->validate([
-            'nama_poli' => 'required|string|max:100',
-            'keterangan' => 'nullable|string',
+        $validated = $request->validate([
+            'nama_poli' => [
+                'required',
+                'string',
+                'max:100',
+                Rule::unique('polis', 'nama_poli')->ignore($poli->id),
+            ],
+            'keterangan' => [
+                'nullable',
+                'string',
+                'max:1000',
+            ],
         ]);
 
-        $poli->update($request->all());
+        $poli->update($validated);
 
-        return redirect()->route('poli.index')->with('success', 'Data poli berhasil diperbarui.');
+        return redirect()
+            ->route('poli.index')
+            ->with('success', 'Data poli berhasil diperbarui.');
     }
 
     public function destroy($id)
     {
         $poli = Poli::findOrFail($id);
+
+        if ($poli->dokters()->exists()) {
+            return redirect()
+                ->route('poli.index')
+                ->with(
+                    'error',
+                    'Poli tidak dapat dihapus karena masih digunakan oleh dokter.'
+                );
+        }
+
         $poli->delete();
 
-        return redirect()->route('poli.index')->with('success', 'Data poli berhasil dihapus.');
+        return redirect()
+            ->route('poli.index')
+            ->with('success', 'Data poli berhasil dihapus.');
     }
 }
