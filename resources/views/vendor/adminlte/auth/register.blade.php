@@ -1,11 +1,15 @@
-@extends('adminlte::auth.auth-page', ['auth_type' => 'register'])
+@extends('adminlte::auth.auth-page', ['authType' => 'register'])
 
 @section('auth_body')
     <div class="auth-modern register-modern">
+
+        {{-- PANEL KIRI --}}
         <div class="auth-visual">
             <a href="{{ url('/') }}" class="auth-brand">
-                <span class="brand-icon"><i class="fas fa-heartbeat"></i></span>
-                <span>
+                <span class="brand-icon">
+                    <i class="fas fa-heartbeat"></i>
+                </span>
+                <span class="brand-text">
                     <strong>SISMENKES</strong>
                     <small>Sistem Informasi Klinik</small>
                 </span>
@@ -18,6 +22,7 @@
                 </span>
 
                 <h1>Mulai perjalanan kesehatan Anda.</h1>
+
                 <p>
                     Buat akun untuk mengakses layanan klinik, mendapatkan
                     informasi jadwal dokter, dan melihat riwayat pemeriksaan
@@ -26,7 +31,9 @@
 
                 <div class="register-benefits">
                     <div class="benefit-item">
-                        <span><i class="fas fa-calendar-check"></i></span>
+                        <span class="benefit-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </span>
                         <div>
                             <strong>Pendaftaran lebih praktis</strong>
                             <small>Akses pendaftaran poli melalui akun Anda.</small>
@@ -34,7 +41,9 @@
                     </div>
 
                     <div class="benefit-item">
-                        <span><i class="fas fa-file-medical-alt"></i></span>
+                        <span class="benefit-icon">
+                            <i class="fas fa-file-medical-alt"></i>
+                        </span>
                         <div>
                             <strong>Informasi lebih terorganisasi</strong>
                             <small>Lihat informasi pemeriksaan yang tersedia.</small>
@@ -42,7 +51,9 @@
                     </div>
 
                     <div class="benefit-item">
-                        <span><i class="fas fa-lock"></i></span>
+                        <span class="benefit-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </span>
                         <div>
                             <strong>Akses akun pribadi</strong>
                             <small>Gunakan akun untuk mengakses layanan pasien.</small>
@@ -57,9 +68,13 @@
             </div>
         </div>
 
+        {{-- PANEL KANAN --}}
         <div class="auth-form-panel">
+
             <div class="mobile-brand">
-                <span class="brand-icon"><i class="fas fa-heartbeat"></i></span>
+                <span class="brand-icon">
+                    <i class="fas fa-heartbeat"></i>
+                </span>
                 <strong>SISMENKES</strong>
             </div>
 
@@ -69,12 +84,13 @@
                 <p>Lengkapi data diri Anda sesuai informasi yang benar.</p>
             </div>
 
+            {{-- PESAN VALIDASI --}}
             @if ($errors->any())
-                <div class="auth-alert auth-alert-error">
+                <div class="auth-alert">
                     <i class="fas fa-exclamation-circle"></i>
                     <div>
                         <strong>Periksa kembali data Anda.</strong>
-                        <div>Masih terdapat data yang belum sesuai.</div>
+                        <p>Masih terdapat data yang belum sesuai.</p>
                     </div>
                 </div>
             @endif
@@ -83,6 +99,8 @@
                 @csrf
 
                 <div class="register-fields">
+
+                    {{-- NAMA LENGKAP --}}
                     <div class="form-group-modern field-full">
                         <label for="name">Nama Lengkap</label>
                         <div class="input-icon-wrap">
@@ -96,6 +114,7 @@
                         @enderror
                     </div>
 
+                    {{-- EMAIL --}}
                     <div class="form-group-modern">
                         <label for="email">Alamat Email</label>
                         <div class="input-icon-wrap">
@@ -109,6 +128,7 @@
                         @enderror
                     </div>
 
+                    {{-- NOMOR HP --}}
                     <div class="form-group-modern">
                         <label for="no_hp">Nomor HP</label>
                         <div class="input-icon-wrap">
@@ -122,6 +142,7 @@
                         @enderror
                     </div>
 
+                    {{-- ALAMAT --}}
                     <div class="form-group-modern field-full">
                         <label for="alamat">Alamat Lengkap</label>
                         <div class="input-icon-wrap">
@@ -136,6 +157,7 @@
                         @enderror
                     </div>
 
+                    {{-- NIK --}}
                     <div class="form-group-modern field-full">
                         <label for="no_ktp">Nomor KTP (NIK)</label>
                         <div class="input-icon-wrap">
@@ -150,6 +172,7 @@
                         @enderror
                     </div>
 
+                    {{-- PASSWORD --}}
                     <div class="form-group-modern">
                         <label for="password">Password</label>
                         <div class="input-icon-wrap">
@@ -167,6 +190,7 @@
                         @enderror
                     </div>
 
+                    {{-- KONFIRMASI PASSWORD --}}
                     <div class="form-group-modern">
                         <label for="password_confirmation">Konfirmasi Password</label>
                         <div class="input-icon-wrap">
@@ -179,6 +203,7 @@
                             </button>
                         </div>
                     </div>
+
                 </div>
 
                 <button type="submit" class="auth-submit">
@@ -191,7 +216,9 @@
                 </p>
             </form>
 
-            <div class="auth-divider"><span>atau</span></div>
+            <div class="auth-divider">
+                <span>atau</span>
+            </div>
 
             <p class="auth-switch">
                 Sudah memiliki akun?
@@ -218,45 +245,69 @@
             --auth-border: #e5eae3;
         }
 
-        body.register-page,
+        /* =====================================
+           HALAMAN REGISTER
+        ===================================== */
+
+        body.register-page {
+            min-height: 100vh;
+            padding: 28px 0;
+            background: var(--auth-ivory) !important;
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+
         body.register-page .content-wrapper {
             background: var(--auth-ivory) !important;
         }
 
-        body.register-page {
-            min-height: 100vh;
-            font-family: 'Source Sans Pro', sans-serif;
+        body.register-page .register-box {
+            float: none !important;
+            width: calc(100% - 48px) !important;
+            max-width: 1150px !important;
+            margin: 0 auto !important;
         }
 
-        .register-box {
-            width: min(1100px, calc(100% - 32px)) !important;
-            max-width: 1100px !important;
-            margin: 28px auto !important;
-        }
-
-        .register-box .card {
-            overflow: hidden;
-            border: 1px solid rgba(229, 234, 227, .9) !important;
-            border-radius: 22px !important;
-            background: #fff;
-            box-shadow: 0 22px 65px rgba(41, 58, 48, .09) !important;
-        }
-
-        .register-box .card-body {
-            padding: 0 !important;
-        }
-
-        .register-box .register-logo,
-        .register-box .card-header,
-        .register-box .card-footer {
+        body.register-page .register-logo,
+        body.register-page .register-box>.card>.card-header,
+        body.register-page .register-box>.card>.card-footer {
             display: none !important;
         }
 
+        body.register-page .register-box>.card {
+            width: 100%;
+            margin: 0;
+            overflow: hidden;
+            border: 1px solid rgba(229, 234, 227, .95) !important;
+            border-radius: 22px !important;
+            background: #fff;
+            box-shadow: 0 20px 60px rgba(41, 58, 48, .08) !important;
+        }
+
+        body.register-page .register-box .card-body {
+            width: 100%;
+            padding: 0 !important;
+        }
+
+        /* =====================================
+           MAIN LAYOUT
+        ===================================== */
+
         .register-modern {
             display: grid;
-            grid-template-columns: .78fr 1.22fr;
-            min-height: 720px;
+            grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+            width: 100%;
+            min-width: 0;
         }
+
+        .auth-visual,
+        .auth-form-panel {
+            min-width: 0;
+            box-sizing: border-box;
+        }
+
+        /* =====================================
+           LEFT PANEL
+        ===================================== */
 
         .auth-visual {
             position: relative;
@@ -264,8 +315,12 @@
             flex-direction: column;
             justify-content: space-between;
             overflow: hidden;
-            padding: 34px;
-            background: linear-gradient(150deg, #f0f5ed 0%, #e1ecdf 55%, #d7e5d6 100%);
+            min-height: 790px;
+            padding: 38px 34px;
+            background: linear-gradient(150deg,
+                    #f0f5ed 0%,
+                    #e5eee2 55%,
+                    #d9e7d8 100%);
         }
 
         .auth-brand {
@@ -283,27 +338,27 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
             width: 43px;
             height: 43px;
-            flex-shrink: 0;
             border-radius: 13px;
             background: var(--auth-green);
             color: #fff;
             font-size: 20px;
         }
 
-        .auth-brand strong,
-        .auth-brand small {
+        .brand-text strong,
+        .brand-text small {
             display: block;
         }
 
-        .auth-brand strong {
-            font-size: 16px;
+        .brand-text strong {
+            font-size: 15px;
             font-weight: 800;
             letter-spacing: .6px;
         }
 
-        .auth-brand small {
+        .brand-text small {
             margin-top: 3px;
             color: var(--auth-muted);
             font-size: 10px;
@@ -320,58 +375,59 @@
             color: var(--auth-green);
             font-size: 9px;
             font-weight: 800;
-            letter-spacing: 1.5px;
+            letter-spacing: 1.4px;
         }
 
         .visual-badge {
             display: inline-flex;
             align-items: center;
             gap: 7px;
-            padding: 8px 10px;
-            border: 1px solid rgba(66, 107, 88, .14);
+            padding: 9px 12px;
+            border: 1px solid rgba(66, 107, 88, .15);
             border-radius: 30px;
-            background: rgba(255, 255, 255, .55);
-            letter-spacing: .8px;
+            background: rgba(255, 255, 255, .6);
         }
 
         .visual-content h1 {
-            margin: 22px 0 14px;
+            max-width: 390px;
+            margin: 24px 0 15px;
             color: #294635;
-            font-size: 33px;
+            font-size: clamp(29px, 3vw, 37px);
             font-weight: 800;
-            line-height: 1.22;
+            line-height: 1.2;
             letter-spacing: -.8px;
         }
 
         .visual-content>p {
+            max-width: 390px;
             margin: 0;
             color: #687c6c;
-            font-size: 12px;
+            font-size: 13px;
             line-height: 1.9;
         }
 
         .register-benefits {
             display: grid;
-            gap: 20px;
-            margin-top: 35px;
+            gap: 22px;
+            margin-top: 42px;
         }
 
         .benefit-item {
             display: flex;
             align-items: flex-start;
-            gap: 12px;
+            gap: 13px;
         }
 
-        .benefit-item>span {
+        .benefit-icon {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 39px;
-            height: 39px;
             flex-shrink: 0;
+            width: 40px;
+            height: 40px;
             border: 1px solid rgba(66, 107, 88, .1);
-            border-radius: 11px;
-            background: rgba(255, 255, 255, .7);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, .75);
             color: var(--auth-green);
             font-size: 15px;
         }
@@ -384,13 +440,13 @@
         .benefit-item strong {
             margin: 2px 0 5px;
             color: #304838;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 800;
         }
 
         .benefit-item small {
             color: #718276;
-            font-size: 10px;
+            font-size: 11px;
             line-height: 1.6;
         }
 
@@ -398,17 +454,22 @@
             position: relative;
             z-index: 1;
             color: #68806c;
-            font-size: 10px;
+            font-size: 11px;
         }
 
         .visual-footer i {
-            margin-right: 6px;
+            margin-right: 7px;
             color: var(--auth-green);
         }
 
+        /* =====================================
+           RIGHT PANEL
+        ===================================== */
+
         .auth-form-panel {
             align-self: center;
-            padding: 42px 43px;
+            padding: 46px clamp(28px, 4vw, 52px);
+            background: #fff;
         }
 
         .mobile-brand {
@@ -416,13 +477,13 @@
         }
 
         .form-heading {
-            margin-bottom: 26px;
+            margin-bottom: 27px;
         }
 
         .form-heading h2 {
-            margin: 10px 0 8px;
+            margin: 11px 0 8px;
             color: var(--auth-text);
-            font-size: 27px;
+            font-size: 28px;
             font-weight: 800;
             letter-spacing: -.7px;
         }
@@ -434,33 +495,55 @@
             line-height: 1.7;
         }
 
+        /* =====================================
+           VALIDATION ALERT
+        ===================================== */
+
         .auth-alert {
             display: flex;
             align-items: flex-start;
-            gap: 9px;
-            margin-bottom: 18px;
-            padding: 11px 13px;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 12px 14px;
             border: 1px solid #f0d8d5;
-            border-radius: 9px;
+            border-radius: 10px;
             background: #fff5f3;
             color: #a94442;
             font-size: 11px;
             line-height: 1.6;
         }
 
+        .auth-alert>i {
+            margin-top: 2px;
+        }
+
+        .auth-alert strong {
+            display: block;
+        }
+
+        .auth-alert p {
+            margin: 2px 0 0;
+        }
+
+        /* =====================================
+           FORM GRID
+        ===================================== */
+
         .register-fields {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            column-gap: 16px;
-        }
-
-        .field-full {
-            grid-column: 1 / -1;
+            column-gap: 17px;
+            row-gap: 0;
+            width: 100%;
         }
 
         .form-group-modern {
             min-width: 0;
-            margin-bottom: 17px;
+            margin-bottom: 19px;
+        }
+
+        .field-full {
+            grid-column: 1 / -1;
         }
 
         .form-group-modern>label {
@@ -471,31 +554,41 @@
             font-weight: 700;
         }
 
+        /* =====================================
+           INPUT
+        ===================================== */
+
         .input-icon-wrap {
             position: relative;
+            width: 100%;
+            min-width: 0;
         }
 
         .input-icon-wrap>i:first-child {
             position: absolute;
             top: 50%;
-            left: 12px;
+            left: 13px;
             z-index: 2;
             color: #849388;
             font-size: 12px;
+            pointer-events: none;
             transform: translateY(-50%);
         }
 
         .modern-input {
             display: block;
             width: 100%;
-            height: 44px;
-            padding: 10px 37px 10px 35px;
+            height: 45px;
+            min-width: 0;
+            box-sizing: border-box;
+            padding: 10px 38px 10px 37px;
             border: 1px solid var(--auth-border);
             border-radius: 9px;
             outline: none;
             background: #fcfdfb;
             color: var(--auth-text);
-            font-size: 11px;
+            font-family: inherit;
+            font-size: 12px;
             transition: border-color .2s, box-shadow .2s, background .2s;
         }
 
@@ -516,13 +609,16 @@
         .toggle-password {
             position: absolute;
             top: 50%;
-            right: 9px;
-            padding: 4px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
             border: 0;
             background: transparent;
             color: #849388;
-            transform: translateY(-50%);
             cursor: pointer;
+            transform: translateY(-50%);
         }
 
         .toggle-password:hover {
@@ -531,11 +627,15 @@
 
         .field-error {
             display: block;
-            margin-top: 5px;
+            margin-top: 6px;
             color: #c44747;
             font-size: 10px;
             line-height: 1.5;
         }
+
+        /* =====================================
+           SUBMIT BUTTON
+        ===================================== */
 
         .auth-submit {
             display: flex;
@@ -543,12 +643,13 @@
             justify-content: center;
             gap: 12px;
             width: 100%;
-            min-height: 47px;
-            margin-top: 5px;
+            min-height: 48px;
+            margin-top: 4px;
             border: 0;
             border-radius: 10px;
             background: var(--auth-green);
             color: #fff;
+            font-family: inherit;
             font-size: 12px;
             font-weight: 700;
             transition: background .2s, transform .2s, box-shadow .2s;
@@ -569,11 +670,15 @@
             text-align: center;
         }
 
+        /* =====================================
+           FOOTER FORM
+        ===================================== */
+
         .auth-divider {
             display: flex;
             align-items: center;
             gap: 12px;
-            margin: 21px 0;
+            margin: 23px 0;
             color: #a0aaa2;
             font-size: 10px;
         }
@@ -619,17 +724,25 @@
             color: var(--auth-green);
         }
 
-        @media (max-width: 991px) {
+        /* =====================================
+           TABLET
+        ===================================== */
+
+        @media (max-width: 991px) and (min-width: 768px) {
+            body.register-page .register-box {
+                width: calc(100% - 30px) !important;
+            }
+
             .register-modern {
-                grid-template-columns: .72fr 1.28fr;
+                grid-template-columns: minmax(0, .72fr) minmax(0, 1.28fr);
             }
 
             .auth-visual {
-                padding: 27px;
+                padding: 30px 24px;
             }
 
             .auth-form-panel {
-                padding: 34px 28px;
+                padding: 36px 25px;
             }
 
             .visual-content h1 {
@@ -639,15 +752,27 @@
             .register-fields {
                 column-gap: 12px;
             }
+
+            .modern-input {
+                font-size: 11px;
+            }
         }
 
+        /* =====================================
+           MOBILE
+        ===================================== */
+
         @media (max-width: 767px) {
-            .register-box {
-                width: calc(100% - 24px) !important;
-                margin: 12px auto !important;
+            body.register-page {
+                padding: 12px 0;
             }
 
-            .register-box .card {
+            body.register-page .register-box {
+                width: calc(100% - 24px) !important;
+                max-width: 560px !important;
+            }
+
+            body.register-page .register-box>.card {
                 border-radius: 17px !important;
             }
 
@@ -661,14 +786,15 @@
             }
 
             .auth-form-panel {
-                padding: 28px 22px;
+                width: 100%;
+                padding: 30px 23px;
             }
 
             .mobile-brand {
                 display: flex;
                 align-items: center;
                 gap: 10px;
-                margin-bottom: 27px;
+                margin-bottom: 28px;
                 color: var(--auth-text);
                 font-size: 14px;
                 font-weight: 800;
@@ -681,12 +807,17 @@
                 font-size: 18px;
             }
 
+            .form-heading {
+                margin-bottom: 23px;
+            }
+
             .form-heading h2 {
-                font-size: 24px;
+                font-size: 25px;
             }
 
             .register-fields {
-                grid-template-columns: 1fr;
+                grid-template-columns: minmax(0, 1fr);
+                column-gap: 0;
             }
 
             .field-full {
@@ -694,124 +825,22 @@
             }
         }
 
-        /* ===== FIX LAYOUT REGISTER SISMENKES ===== */
+        /* =====================================
+           SMALL MOBILE
+        ===================================== */
 
-        /* Lepaskan batas lebar bawaan AdminLTE */
-        body.register-page .register-box {
-            width: calc(100% - 48px) !important;
-            max-width: 1120px !important;
-            margin: 24px auto !important;
-            float: none !important;
-        }
-
-        body.register-page .register-box>.card {
-            width: 100% !important;
-            margin: 0 !important;
-        }
-
-        body.register-page .register-box .card-body {
-            width: 100% !important;
-            padding: 0 !important;
-        }
-
-        /* Pastikan panel dan form memiliki ruang yang proporsional */
-        body.register-page .register-modern {
-            display: grid !important;
-            grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr) !important;
-            width: 100% !important;
-            min-width: 0;
-            align-items: stretch;
-        }
-
-        body.register-page .register-modern .auth-visual,
-        body.register-page .register-modern .auth-form-panel {
-            min-width: 0;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        body.register-page .register-modern .auth-form-panel {
-            padding: 42px !important;
-        }
-
-        /* Dua kolom input yang benar-benar sejajar */
-        body.register-page .register-fields {
-            display: grid !important;
-            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-            column-gap: 20px !important;
-            row-gap: 0 !important;
-            width: 100%;
-        }
-
-        body.register-page .register-fields .form-group-modern {
-            width: 100%;
-            min-width: 0;
-            margin-bottom: 19px;
-        }
-
-        body.register-page .register-fields .field-full {
-            grid-column: 1 / -1 !important;
-        }
-
-        body.register-page .register-fields .input-icon-wrap {
-            width: 100%;
-            min-width: 0;
-        }
-
-        body.register-page .register-fields .modern-input {
-            display: block;
-            width: 100%;
-            min-width: 0;
-            box-sizing: border-box;
-        }
-
-        /* Tablet: tetap dua kolom, tetapi jarak diperkecil */
-        @media (min-width: 768px) and (max-width: 991px) {
-            body.register-page .register-box {
-                width: calc(100% - 24px) !important;
+        @media (max-width: 380px) {
+            .auth-form-panel {
+                padding: 25px 17px;
             }
 
-            body.register-page .register-modern {
-                grid-template-columns: minmax(220px, 0.7fr) minmax(0, 1.3fr) !important;
+            .form-heading h2 {
+                font-size: 23px;
             }
 
-            body.register-page .register-modern .auth-form-panel {
-                padding: 28px 22px !important;
-            }
-
-            body.register-page .register-fields {
-                column-gap: 12px !important;
-            }
-        }
-
-        /* HP: ubah menjadi satu kolom agar tidak berdesakan */
-        @media (max-width: 767px) {
-            body.register-page .register-box {
-                width: calc(100% - 24px) !important;
-                max-width: 560px !important;
-                margin: 12px auto !important;
-            }
-
-            body.register-page .register-modern {
-                display: block !important;
-            }
-
-            body.register-page .register-modern .auth-visual {
-                display: none !important;
-            }
-
-            body.register-page .register-modern .auth-form-panel {
-                width: 100% !important;
-                padding: 28px 22px !important;
-            }
-
-            body.register-page .register-fields {
-                grid-template-columns: minmax(0, 1fr) !important;
-                column-gap: 0 !important;
-            }
-
-            body.register-page .register-fields .field-full {
-                grid-column: auto !important;
+            .modern-input {
+                height: 43px;
+                font-size: 11px;
             }
         }
     </style>
@@ -821,13 +850,21 @@
     <script>
         document.addEventListener('click', function(event) {
             const button = event.target.closest('.toggle-password');
-            if (!button) return;
+
+            if (!button) {
+                return;
+            }
 
             const input = document.getElementById(button.dataset.target);
-            if (!input) return;
+
+            if (!input) {
+                return;
+            }
 
             const showPassword = input.type === 'password';
+
             input.type = showPassword ? 'text' : 'password';
+
             button.setAttribute('aria-pressed', String(showPassword));
             button.setAttribute(
                 'aria-label',
@@ -835,6 +872,7 @@
             );
 
             const icon = button.querySelector('i');
+
             if (icon) {
                 icon.classList.toggle('fa-eye', !showPassword);
                 icon.classList.toggle('fa-eye-slash', showPassword);
